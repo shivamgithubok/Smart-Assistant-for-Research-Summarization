@@ -7,45 +7,42 @@ A smart assistant designed to help researchers upload documents, get concise sum
 ## 📁 Project Structure
 
 smart-assistant/
-|-- backend/
-│   |-- app/
-│   │   |-- __init__.py
-│   │   |-- main.py                 # FastAPI app with API endpoints
-│   │   |-- document_processor.py   # Handles PDF/TXT extraction and summarization
-│   │   |-- question_answerer.py    # Handles question answering and justification
-│   │   ├- question_generator.py   # Generates logic-based questions
-|   |   |-- 
-│   │   ├- answer_evaluator.py     # Evaluates user answers in Challenge Me mode
-│   │   └── models/
-│   │       ├── __init__.py
-│   │       ├── document.py        # Data models for documents and responses
-│   │       └── context.py         # Manages conversation context (for memory)
-│   ├── requirements.txt            # Python dependencies
-│   └── .env                       # Environment variables (e.g., API keys)
+│
+├── backend/
+│ ├── app/
+│ │ ├── init.py
+│ │ ├── main.py # FastAPI app with API endpoints
+│ │ ├── document_processor.py # Handles PDF/TXT extraction and summarization
+│ │ ├── question_answerer.py # Handles question answering and justification
+│ │ ├── question_generator.py # Generates logic-based questions
+│ │ ├── answer_evaluator.py # Evaluates user answers in Challenge Me mode
+│ │ └── models/
+│ │ ├── init.py
+│ │ ├── document.py # Data models for documents and responses
+│ │ └── context.py # Manages conversation context (for memory)
+│ ├── requirements.txt # Python dependencies
+│ └── .env # Environment variables (e.g., API keys)
+│
 ├── frontend/
-│   ├── public/
-│   │   ├── index.html             # Main HTML file
-│   │   └── favicon.ico
-│   ├── src/
-│   │   ├── components/
-│   │   │   ├── FileUpload.js      # Component for document upload
-│   │   │   ├── SummaryDisplay.js  # Displays document summary
-│   │   │   ├── AskAnything.js     # Interface for free-form questions
-│   │   │   ├── ChallengeMe.js     # Interface for challenge mode
-│   │   │   └── HistoryDisplay.js # Displays highlighted document snippets (bonus)
-│   │   ├── App.js                 # Main React app
-│   │   ├── App.css                # Tailwind CSS imports
-│   │   ├── index.js               # React entry point
-│   │   └── axios.js               # Axios setup for API calls
-│   ├── package.json               # Node dependencies
-│   └── tailwind.config.js         # Tailwind CSS configuration
-├── README.md                      # Project setup, architecture, and demo instructions
-├── .gitignore                     # Git ignore file
-└── demo.mp4                       # Optional demo video (2-3 min)
-
-
-
-
+│ ├── public/
+│ │ ├── index.html # Main HTML file
+│ │ └── favicon.ico
+│ ├── src/
+│ │ ├── components/
+│ │ │ ├── FileUpload.js # Component for document upload
+│ │ │ ├── SummaryDisplay.js # Displays document summary
+│ │ │ ├── AskAnything.js # Interface for free-form questions
+│ │ │ ├── ChallengeMe.js # Interface for challenge mode
+│ │ │ └── HistoryDisplay.js # Displays highlighted document snippets
+│ │ ├── App.js # Main React app
+│ │ ├── App.css # Tailwind CSS imports
+│ │ ├── index.js # React entry point
+│ │ └── axios.js # Axios setup for API calls
+│ ├── package.json # Node dependencies
+│ └── tailwind.config.js # Tailwind CSS configuration
+│
+├── README.md # Project documentation
+├── .gitignore # Git ignore file
 ---
 
 ## 📄 Description
