@@ -18,20 +18,19 @@ A smart assistant designed to help researchers upload documents, get concise sum
 
 ---
 
-## 🧰 Dependencies Setup
 
-### 🔧 Backend Setup
+---
 
-1. Navigate to the backend directory:
-   ```bash
-   cd backend
+## 🧰 Installation & Setup
 
+### 🔧 Backend
+
+```bash
+cd backend
 python -m venv venv_name
-.\venv_name\Scripts\activate  # Windows
-
-
-run the requirements.txt file for dependency installment:-
+.\venv_name\Scripts\activate   # For Windows
 pip install -r requirements.txt
+
 
 goto client
 cd client 
