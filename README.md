@@ -1,23 +1,52 @@
-# Smart Assistant for Research Summarization
+# 📚 Smart Assistant for Research Summarization
 
-A smart assistant designed to help researchers upload documents, get concise summaries, ask intelligent questions, and test their understanding via challenge-based questions—all powered by Google Gemini and FAISS.
+A smart assistant that enables researchers to:
+
+* Upload PDF/TXT documents
+* Get concise summaries
+* Ask intelligent questions
+* Test their understanding with challenge-based logic questions
+
+Powered by **FastAPI**, **React**, **Google Gemini API**, and **FAISS**.
 
 ---
 
-# 📁 Project Structure: Smart Assistant for Research Summarization
+## 📁 Project Structure
 
 ![Smart Assistant Screenshot](structure.png)
 
----
-
-
-## 📄 Description
-
-- `backend/`: Contains the FastAPI application and logic for document parsing, summarization, question answering, and challenge-based evaluation.
-- `frontend/`: React Single Page Application (SPA) with upload interface, summary viewer, Q&A chat, and challenge mode.
-
----
-
+```
+smart-assistant/
+│
+├── backend/
+│   ├── app/
+│   │   ├── main.py                # FastAPI app with API endpoints
+│   │   ├── document_processor.py  # PDF/TXT extraction and summarization
+│   │   ├── question_answerer.py   # Q&A and justification logic
+│   │   ├── question_generator.py  # Generates challenge questions
+│   │   ├── answer_evaluator.py    # Evaluates user answers
+│   │   └── models/
+│   │       ├── document.py        # Data models for documents
+│   │       └── context.py         # In-memory context manager
+│   ├── requirements.txt           # Python dependencies
+│   └── .env                       # API keys and environment variables
+│
+├── frontend/
+│   ├── public/
+│   │   ├── index.html             # HTML template
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── FileUpload.js
+│   │   │   ├── SummaryDisplay.js
+│   │   │   ├── AskAnything.js
+│   │   │   ├── ChallengeMe.js
+│   │   │   └── HistoryDisplay.js
+│   │   ├── App.js
+│   │   ├── App.css
+│   │   └── axios.js               # Axios API config
+│   ├── package.json               # Node dependencies
+│   └── tailwind.config.js         # Tailwind CSS config
+```
 
 ---
 
@@ -30,106 +59,112 @@ cd backend
 python -m venv venv_name
 .\venv_name\Scripts\activate   # For Windows
 pip install -r requirements.txt
+```
 
+> 💡 Create a `.env` file and add your Gemini API key:
 
-goto client
-cd client 
-run:--
-npm install 
+```
+GOOGLE_API_KEY=your_google_api_key
+```
 
+### 💻 Frontend
 
-TO run the project :---------------
-BACKEND command:--
+```bash
+cd frontend
+npm install
+```
+
+---
+
+## ▶️ Running the Project
+
+### Start Backend
+
+```bash
 python -m app.main
+```
 
-client (fortend):--
+Runs on [http://localhost:8000](http://localhost:8000)
+
+### Start Frontend
+
+```bash
 npm start
+```
 
-Create a .env file store your GOOGLE_API_KEY
-GOOGLE_API_KEY=="you api key"
+Runs on [http://localhost:3000](http://localhost:3000) or [http://localhost:5000](http://localhost:5000)
 
-the backend run on localhost:8000
-and forntend will run on localhost:5000
+---
 
+## 💡 Features
 
+### ✅ Q\&A Chatbot
 
-Accuracy part :------------
-the accuracy will appear on challanging question you answer along with justification.
-you will see three question in the caht and then answer from in the same input chat where chat boot of question - answering is happend
+Ask any question about the uploaded research paper. The system responds with an answer and a justification, using vector search and Gemini model.
 
-The Q&A Cahtboot:--------------
-write question in the input sumbit the question and answer will apper in the display you can ask question about the reseach paper you parsed
+### 🎯 Challenge Mode
 
+Tests your understanding by asking three logic-based questions. You provide answers, and the model evaluates them with justifications.
 
+---
 
+## 🔄 Data Flow Overview
 
-Data Flow Description::::::-----------------
-The project consists of a React frontend (client directory) and a FastAPI backend (backend directory). The frontend allows users to upload documents (PDF/TXT), view summaries, ask questions, and receive answers based on the document content. The backend processes documents, generates summaries, and answers questions using Google’s Gemini model and FAISS for vector search. Here’s the step-by-step data flow:
+### 1. User Interaction (Frontend)
 
-User Interaction (Frontend):---------------------------
-The user interacts with the React app at http://localhost:3000.
-In App.js, the initial state is mode: 'upload', rendering FileUpload.js.
-The user uploads a PDF or TXT file via the FileUpload component.
-File Upload Request (Frontend to Backend):------------------------
+* React app initialized at `/`.
+* `FileUpload.js` allows user to upload PDF/TXT.
 
-FileUpload.js sends a POST request to http://localhost:8000/upload using axios (configured in axios.js with base URL http://localhost:8000).
-The request includes the file as a FormData object.
-App.js updates its state (document, summary, mode: 'summary') with the response.
-Document Processing (Backend):------------------------
+### 2. File Upload (Frontend → Backend)
 
+* POST to `/upload`
+* File processed in `document_processor.py` → text & summary generated.
+* Backend response: `{ text, summary }`
 
-In main.py, the /upload endpoint receives the file and validates its format (PDF/TXT).
-The process_document function (from document_processor.py) extracts text from the file.
-The generate_summary function creates a summary of the extracted text.
-The ContextManager stores the document text in memory (context_manager.set_document).
-The backend returns a JSON response: { "text": document_text, "summary": summary }.
+### 3. Summary Display (Frontend)
 
-Summary Display (Frontend):-------------------------
-App.js renders SummaryDisplay.js, showing the summary.
-Buttons in App.js allow switching to mode: 'ask' (rendering AskAnything.js) or mode: 'challenge' (rendering ChallengeMe.js).
+* Summary shown via `SummaryDisplay.js`.
+* User can toggle to:
 
+  * Q\&A mode (`AskAnything.js`)
+  * Challenge mode (`ChallengeMe.js`)
 
+### 4. Ask Questions (Frontend → Backend)
 
-Question Submission (Frontend to Backend):--------------------------
-In AskAnything.js, the user enters a question in the input field.
-On form submission, AskAnything.js sends a POST request to /ask with a JSON body: { "question": "<user_question>" }.
-The AskAnythingRequest model in main.py validates the question (non-empty).
+* POST to `/ask` with `{ question }`
+* `question_answerer.py`:
 
+  * Splits document into chunks
+  * Uses FAISS + HuggingFaceEmbeddings
+  * Builds prompt
+  * Calls Gemini API
+* Returns: `{ question, answer, justification }`
 
+### 5. Display Response (Frontend)
 
+* Answer displayed along with justification
+* Stored in session history using `ContextManager`
+* Rendered using `HistoryDisplay.js`
 
-Question Answering (Backend):-------------------
-The /ask endpoint in main.py checks if a document is uploaded (context_manager.document).
-It calls answer_question from question_answerer.py, passing the question, document text, and ContextManager.
+### 6. Challenge Me Mode
 
+* GET `/challenge` returns 3 logic questions
+* User answers sent to `/evaluate`
+* Evaluated using `answer_evaluator.py`
 
+---
 
+## 🔌 Technologies Used
 
-In question_answerer.py:-------------------------
-The document is split into chunks (split_document).
-A FAISS vector store is created using HuggingFaceEmbeddings (all-MiniLM-L6-v2).
-Relevant chunks are retrieved via similarity search (vector_store.similarity_search).
-Conversation history is fetched from ContextManager (get_history).
-A prompt is constructed using PromptTemplate, combining the question, context, and history.
-The ChatGoogleGenerativeAI model (gemini-1.5-flash) generates an answer.
-A justification is extracted from the top relevant chunk.
-The ContextManager stores the interaction (add_interaction).
-The backend returns a JSON response: { "question": "<question>", "answer": "<answer>", "justification": "<justification>" }.
+* **Frontend:** React, Tailwind CSS, Axios
+* **Backend:** FastAPI, LangChain, Google Generative AI (Gemini)
+* **Embedding & Retrieval:** HuggingFace (MiniLM), FAISS
+* **Data Flow:** JSON over HTTP API
 
+---
 
+## 📬 Contact
 
-Response Display (Frontend):-----------------
-AskAnything.js receives the response and updates its state (response).
-The question, answer, and justification are displayed in the UI.
-The interaction is added to the history via addToHistory (passed from App.js), which updates App.js’s history state.
-HistoryDisplay.js renders the updated history.
+For issues or contributions, feel free to open a pull request or contact the maintainer.
 
-
-
-Challenge Questions (Optional):------------------
-If the user selects "Challenge Me," ChallengeMe.js sends a GET request to /challenge.
-The backend’s /challenge endpoint in main.py calls generate_challenge_questions, returning a list of questions.
-User answers are sent to /evaluate, processed by evaluate_answer, and returned as a response.
-External Services:
-The backend uses langchain-google-genai to interact with Google’s Gemini API (requires GOOGLE_API_KEY from .env).
-HuggingFaceEmbeddings generates embeddings for FAISS, enabling document chunk retrieval.
+---
