@@ -13,7 +13,7 @@ Powered by **FastAPI**, **React**, **Google Gemini API**, and **FAISS**.
 
 ## 📁 Project Structure
 
-![Smart Assistant Screenshot](structure.png)
+<!-- ![Smart Assistant Screenshot](structure.png) -->
 
 ```
 smart-assistant/
