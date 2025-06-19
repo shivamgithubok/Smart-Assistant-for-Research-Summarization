@@ -156,15 +156,8 @@ Tests your understanding by asking three logic-based questions. You provide answ
 
 ## 🔌 Technologies Used
 
-* **Frontend:** React, Tailwind CSS, Axios
+* **Frontend:** React, CSS, Axios
 * **Backend:** FastAPI, LangChain, Google Generative AI (Gemini)
 * **Embedding & Retrieval:** HuggingFace (MiniLM), FAISS
 * **Data Flow:** JSON over HTTP API
 
----
-
-## 📬 Contact
-
-For issues or contributions, feel free to open a pull request or contact the maintainer.
-
----
