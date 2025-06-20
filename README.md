@@ -72,6 +72,8 @@ GOOGLE_API_KEY=your_google_api_key
 ```bash
 cd frontend
 npm install
+if npm install not work use:-
+npm install --legacy-peer-deps
 ```
 
 ---
